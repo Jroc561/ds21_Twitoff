@@ -2,27 +2,33 @@
 
 from flask_sqlalchemy import SQLAlchemy
 
+
+
 DB = SQLAlchemy()
 
-# User Table
+
+# User Table (in relational database the table is "user")
 class User(DB.Model):
     """Twitter users corresponding to Tweets"""
     # primary id column
     id = DB.Column(DB.BigInteger, primary_key=True)
     # name column
     name = DB.Column(DB.String, nullable=False)
+    # keeps track of users most recent tweet
+    newest_tweet_id = DB.Column(DB.BigInteger)
 
     def __repr__(self):
         return "<User: {}>".format(self.name)
 
 
-# Tweet Table
+# Tweet Table (in relational database the table is "tweet")
 class Tweet(DB.Model):
     """Tweet Text and Data"""
     #primary id column
     id = DB.Column(DB.BigInteger, primary_key=True)
     # text column of character length 300 (unicode)
     text = DB.Column(DB.Unicode(300))
+    vect = DB.Column(DB.PickleType, nullable=False)
     # foreign key - user.id
     user_id = DB.Column(DB.BigInteger, DB.ForeignKey('user.id'), nullable=False)
     user = DB.relationship('User', backref=DB.backref('tweets', lazy=True))
@@ -30,10 +36,3 @@ class Tweet(DB.Model):
     def __repr__(self):
         return "<Tweet: {}>".format(self.text)
 
-def insert_example_users():
-    """Will get error if ran twice since data already exist"""
-    nick = User(id=1, name='nick')
-    elonmusk = User(id=2, name='elonmusk')
-    DB.session.add(nick) # add user
-    DB.session.add(elonmusk) # add user
-    DB.session.commit() # commits all
