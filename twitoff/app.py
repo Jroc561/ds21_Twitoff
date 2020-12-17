@@ -3,7 +3,7 @@
 from os import getenv
 from flask import Flask, render_template, request
 from .twitter import add_or_update_user
-from .models import DB, User, Migrate
+from .models import DB, User, MIGRATE
 from .predict import predict_user
 
 

@@ -13,6 +13,8 @@ python-dotenv = "*"
 numpy = "==1.19.3"
 scikit-learn = "*"
 flask-migrate = "*"
+gunicorn = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 
